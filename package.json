@@ -1,0 +1,24 @@
+{
+    "name": "@shared/core",
+    "version": "1.0.0",
+    "description": "Core business logic, constants and validators for PILOT OS",
+    "type": "module",
+    "main": "./src/index.js",
+    "exports": {
+        ".": "./src/index.js",
+        "./rbac": "./src/rbac/index.js",
+        "./calculators": "./src/calculators/index.js",
+        "./validators": "./src/validators/index.js",
+        "./constants": "./src/constants/index.js",
+        "./industries": "./src/industries/index.js",
+        "./utils": "./src/utils/index.js"
+    },
+    "scripts": {
+        "test": "node src/calculators/missionCalculator.test.js && node src/calculators/prePlanner.test.js && node src/calculators/continuousRecurrenceEngine.test.js"
+    },
+    "dependencies": {
+        "date-holidays": "^3.26.8"
+    },
+    "author": "SECUPILOT",
+    "license": "MIT"
+}
