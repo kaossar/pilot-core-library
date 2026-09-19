@@ -257,11 +257,11 @@ describe('Operational Preparation - prePlanner Tests', () => {
 
         // Ensure chronological unrolling is correct
         assert.ok(shifts.length > 0);
-        const seq1Shift = shifts.find(s => s.startAt.startsWith('2026-07-20'));
-        const seq2Shift = shifts.find(s => s.startAt.startsWith('2026-08-20'));
+        const seq1Shift = shifts.find(s => s.startAt.startsWith('2026-07-20') && !s.startAt.includes('T00:00:00'));
+        const seq2Shift = shifts.find(s => s.startAt.startsWith('2026-08-20') && !s.startAt.includes('T00:00:00'));
 
-        assert.strictEqual(new Date(seq1Shift.startAt).getHours(), 20); // 20:00 start in seq1
-        assert.strictEqual(new Date(seq2Shift.startAt).getHours(), 18); // 18:00 start in seq2
+        assert.strictEqual(new Date(seq1Shift.startAt).getUTCHours(), 20); // 20:00 start in seq1
+        assert.strictEqual(new Date(seq2Shift.startAt).getUTCHours(), 18); // 18:00 start in seq2
     });
 
     test('12. generatePrePlanningShifts - Cas 9: Multiple qualifications support', () => {
