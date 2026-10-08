@@ -1,0 +1,26 @@
+#!/usr/bin/env sh
+# ==============================================================================
+# PILOT OS — Pre-commit Hook (pilot-core-library)
+# ==============================================================================
+set -e
+
+# Détection des fichiers JavaScript stagés
+STAGED=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|mjs)$' || true)
+
+if [ -z "$STAGED" ]; then
+  exit 0
+fi
+
+echo ""
+echo "⚙  PILOT Core Library — Exécution des tests calculateurs & métiers..."
+npm test
+
+# Validation transversale optionnelle
+if [ "$PILOT_VERIFY_ALL" = "1" ]; then
+  echo ""
+  echo "🌐 PILOT_VERIFY_ALL=1 détecté — Exécution de la suite transversale..."
+  node ../scripts/verify-all.mjs
+fi
+
+echo "✔ PILOT Core Library : validation réussie !"
+echo ""
