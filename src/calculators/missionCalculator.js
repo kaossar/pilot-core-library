@@ -707,9 +707,9 @@ export const calculateMinutesInInterval = (start, end) => {
     let startMin = timeToMinutes(start);
     let endMin = timeToMinutes(end);
 
-    // Handle overnight intervals
+    // Gère les intervalles chevauchant minuit (nuit)
     if (endMin <= startMin) {
-        endMin += 24 * 60; // Add 24 hours
+        endMin += 24 * 60; // Ajout de 24 heures
     }
 
     return endMin - startMin;
@@ -970,7 +970,7 @@ export const splitDayIntoIntervals = (
         const start = boundariesToUse[i];
         const end = boundariesToUse[i + 1];
 
-        // Calculate duration
+        // Calcul de la durée
         const minutes = calculateMinutesInInterval(start, end);
         const hours = minutes / 60;
 
@@ -1194,7 +1194,7 @@ export const calculateDayDetails = (date, config, holidayCache) => {
         if (isPrevSelected && mode === 'daily') {
             const prevIsH24 = (weekendH24 && prevIsWeekend) || (holidayH24 && prevIsHoliday);
 
-            // Check if shift is overnight (EndTime < StartTime)
+            // Vérifie si la vacation chevauche minuit (HeureFin < HeureDébut)
             const isOvernight = timeToMinutes(dayEnd) < timeToMinutes(dayStart); // Note: dayStart/End here are set from config above
             // Wait, dayStart/End might be 00:00/24:00 if H24 is applied. 
             // We need the *Standard* Configured Times to know if it's overnight.
@@ -1396,12 +1396,12 @@ export const calculateDayDetails = (date, config, holidayCache) => {
     }
 
 
-    // Check for overlap with next day if next day is H24 (Weekend or Holiday)
-    // This prevents double counting hours (e.g., Friday night shift overlapping with Saturday H24)
+    // Vérifie le chevauchement avec le lendemain si le lendemain est H24 (week-end ou jour férié)
+    // Cela évite de compter les heures en double (ex. vacation de nuit le vendredi qui empiète sur samedi H24)
     const nextDay = new Date(dayDate);
     nextDay.setDate(nextDay.getDate() + 1);
 
-    // Check if next day is within calculation range
+    // Vérifie si le lendemain se trouve dans la plage de calcul
     const isNextDayInRange = nextDay <= createLocalDate(endDate);
 
     if (isNextDayInRange && isDaySelected) {
@@ -1418,7 +1418,7 @@ export const calculateDayDetails = (date, config, holidayCache) => {
             if (nextIsH24) {
                 const startMin = timeToMinutes(dayStart);
                 let endMin = timeToMinutes(dayEnd);
-                // Handle overnight wrapping for comparison
+                // Gère le passage à minuit pour la comparaison
                 if (endMin <= startMin) endMin += 24 * 60;
 
                 // If shift spills into next day (which is H24), truncate to midnight
@@ -1456,7 +1456,7 @@ export const calculateDayDetails = (date, config, holidayCache) => {
     // Aggregate intervals into buckets
     const buckets = aggregateIntervalsToBuckets(intervals);
 
-    // Calculate total hours
+    // Calcul du total des heures
     const totalHours = intervals.reduce((sum, interval) => sum + interval.hours, 0);
 
     return {
@@ -1513,7 +1513,7 @@ export const calculateMissionHoursWithJournal = (config) => {
         dateRange.push(postEndDateStr);
     }
 
-    // Calculate details for each day
+    // Calcul des détails pour chaque journée
     const days = dateRange.map(date => {
         const day = calculateDayDetails(date, effectiveConfig, holidayCache);
         return {
@@ -1721,14 +1721,14 @@ export const calculateMissionHours = (config) => {
                     const isLastDay = dayIterator.toDateString() === endRange.toDateString();
 
                     if (isFirstDay && isLastDay) {
-                        // Single-day continuous period: use exact startTime to endTime
-                        // Set hours again because we reset s/e
+                        // Période continue sur une seule journée : utilisation exacte de startTime à endTime
+                        // Réassignation des heures après réinitialisation des bornes s/e
                         const [sh, sm] = startTime.split(':').map(Number);
                         const [eh, em] = endTime.split(':').map(Number);
                         s.setHours(sh, sm, 0, 0);
                         e.setHours(eh, em, 0, 0);
 
-                        // Handle overnight shift on single day (e.g., 22:00 -> 02:00)
+                        // Gère la vacation de nuit sur une seule journée (ex. 22:00 -> 02:00)
                         if (e <= s) {
                             e.setDate(e.getDate() + 1);
                         }
@@ -1800,7 +1800,7 @@ export const detectOverlaps = (existingSequences, newStartDate, newEndDate, newQ
         const existingStart = createLocalDate(seq.startDate);
         const existingEnd = createLocalDate(seq.endDate);
 
-        // Check if date ranges overlap
+        // Vérifie si les plages de dates se chevauchent
         if (newStart <= existingEnd && newEnd >= existingStart) {
             const overlapStart = newStart > existingStart ? newStart : existingStart;
             const overlapEnd = newEnd < existingEnd ? newEnd : existingEnd;

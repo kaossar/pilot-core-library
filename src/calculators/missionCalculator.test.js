@@ -1,4 +1,4 @@
-import { test, describe } from 'node:test';
+import { test, describe } from 'vitest';
 import assert from 'node:assert';
 import { calculateMissionHoursWithJournal, formatDailyJournalAsText, calculateDayDetails, computeSingleEndDate, extractPostalCode, isMosellePostalCode, isAlsaceMosellePostalCode, isAlsaceMoselleRegion, getAlsaceMoselleDepartment, getHolidayRegionContext, resolveHolidayRegion, ALSACE_MOSELLE_DEPARTMENTS } from './missionCalculator.js';
 

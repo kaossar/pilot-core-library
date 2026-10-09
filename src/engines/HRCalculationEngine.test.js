@@ -2,7 +2,7 @@
  * HRCalculationEngine.test.js — Suite de tests unitaires pour le moteur central RH & Prépaie
  */
 
-import test from 'node:test';
+import { test } from 'vitest';
 import assert from 'node:assert/strict';
 import { HRCalculationEngine } from './HRCalculationEngine.js';
 

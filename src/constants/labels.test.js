@@ -2,7 +2,7 @@
  * labels.test.js — Rôles d'affectation et libellés de qualification (source unique)
  * (exécuté via `node src/constants/labels.test.js`).
  */
-import test from 'node:test';
+import { test } from 'vitest';
 import assert from 'node:assert/strict';
 import {
     AFFECTATION_ROLES,

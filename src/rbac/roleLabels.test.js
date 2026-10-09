@@ -2,7 +2,7 @@
  * roleLabels.test.js — Garantit que la table des libellés de rôles est complète et unique
  * (exécuté via `node src/rbac/roleLabels.test.js`).
  */
-import test from 'node:test';
+import { test } from 'vitest';
 import assert from 'node:assert/strict';
 import { ROLES, ROLE_LABELS, getRoleLabel } from './matrix.js';
 

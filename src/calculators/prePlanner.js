@@ -293,7 +293,7 @@ export const generatePrePlanningShifts = (dailyDays, config = {}, userDecisions 
             const configEndH = config.endTime ? parseInt(config.endTime.split(':')[0], 10) : 20;
             const isOvernight = configEndH <= configStartH;
             
-            // Check if this day is H24
+            // Vérifie si la journée est en modalité H24
             const isWeekend = day.isWeekend;
             const isHoliday = day.isHoliday;
             const weekday = new Date(day.date).getDay();

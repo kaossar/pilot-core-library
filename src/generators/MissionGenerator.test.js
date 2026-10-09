@@ -5,12 +5,12 @@
  * @module MissionGenerator.test
  */
 
-import { describe, it } from 'node:test';
+import { describe, it } from 'vitest';
 import assert from 'node:assert/strict';
 import { MissionGenerator } from './MissionGenerator.js';
 
 // ============================================================================
-// HELPERS
+// FONCTIONS UTILITAIRES
 // ============================================================================
 
 const makeShift = (overrides = {}) => ({

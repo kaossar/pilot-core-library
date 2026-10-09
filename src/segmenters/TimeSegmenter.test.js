@@ -2,7 +2,7 @@
  * TimeSegmenter.test.js — Tests unitaires exhaustifs pour TimeSegmenter
  */
 
-import test from 'node:test';
+import { test } from 'vitest';
 import assert from 'node:assert/strict';
 import { segmentTimeInterval, isTimeInNightWindow, checkHoliday, getHolidaysService } from './TimeSegmenter.js';
 

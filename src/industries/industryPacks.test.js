@@ -1,4 +1,4 @@
-import test from 'node:test';
+import { describe, it } from 'vitest';
 import assert from 'node:assert/strict';
 import { 
     CLEANING_PACK, 
@@ -9,8 +9,8 @@ import {
     INDUSTRY_PACKS 
 } from './index.js';
 
-test('Referentiel des packs sectoriels multidomaines', async (t) => {
-    await t.test('Chaque pack possede les identifiants conventionnels et labels requis', () => {
+describe('Referentiel des packs sectoriels multidomaines', () => {
+    it('Chaque pack possede les identifiants conventionnels et labels requis', () => {
         const packs = [CLEANING_PACK, RECEPTION_PACK, FACILITY_PACK, SECURITY_PACK];
         for (const p of packs) {
             assert.ok(p.id, 'Chaque pack doit avoir un id');
@@ -24,7 +24,7 @@ test('Referentiel des packs sectoriels multidomaines', async (t) => {
         }
     });
 
-    await t.test('Le pack Proprete (IDCC 3173) definit les clauses et grilles adaptees', () => {
+    it('Le pack Proprete (IDCC 3173) definit les clauses et grilles adaptees', () => {
         assert.equal(CLEANING_PACK.idcc, '3173');
         assert.equal(CLEANING_PACK.clausesContrat.tempsPartielModule, true);
         assert.equal(CLEANING_PACK.clausesContrat.reprisePersonnelAnnexe7, true);
@@ -34,7 +34,7 @@ test('Referentiel des packs sectoriels multidomaines', async (t) => {
         assert.equal(ash.billingRateSuggested, 23.50);
     });
 
-    await t.test('Le pack Accueil (IDCC 2098) definit les horaires decales et clauses d accueil', () => {
+    it('Le pack Accueil (IDCC 2098) definit les horaires decales et clauses d accueil', () => {
         assert.equal(RECEPTION_PACK.idcc, '2098');
         assert.equal(RECEPTION_PACK.clausesContrat.horairesDecales, true);
         assert.equal(RECEPTION_PACK.clausesContrat.tenueAccueilEntretien, true);
@@ -44,7 +44,7 @@ test('Referentiel des packs sectoriels multidomaines', async (t) => {
         assert.equal(hote.billingRateSuggested, 25.00);
     });
 
-    await t.test('Le pack Facility Management definit la polyvalence technique', () => {
+    it('Le pack Facility Management definit la polyvalence technique', () => {
         assert.equal(FACILITY_PACK.clausesContrat.polyvalenceTechnique, true);
         assert.equal(FACILITY_PACK.clausesContrat.interventionsMultisites, true);
         const cvc = FACILITY_PACK.qualifications.find(q => q.value === 'TECHNICIEN_CVC');
@@ -52,7 +52,7 @@ test('Referentiel des packs sectoriels multidomaines', async (t) => {
         assert.equal(cvc.billingRateSuggested, 42.00);
     });
 
-    await t.test('getIndustryPack resout fidelement chaque pack avec repli par defaut', () => {
+    it('getIndustryPack resout fidelement chaque pack avec repli par defaut', () => {
         assert.equal(getIndustryPack('cleaning').id, 'cleaning');
         assert.equal(getIndustryPack('reception').id, 'reception');
         assert.equal(getIndustryPack('facility').id, 'facility');

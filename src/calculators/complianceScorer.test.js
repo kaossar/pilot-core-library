@@ -5,13 +5,13 @@
  * @module complianceScorer.test
  */
 
-import { describe, it } from 'node:test';
+import { describe, it } from 'vitest';
 import assert from 'node:assert/strict';
 import { buildComplianceScore, buildConformanceWarnings } from './complianceScorer.js';
 import { VIOLATIONS } from './rotationEngine.js';
 
 // ============================================================================
-// HELPERS — construction de fixtures
+// FONCTIONS D'AIDE — construction de fixtures
 // ============================================================================
 
 /** Crée un shift assigné minimal */

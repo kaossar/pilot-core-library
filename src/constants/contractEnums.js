@@ -332,7 +332,7 @@ export const RISQUE_SCORE = Object.freeze({
 });
 
 // =============================================================================
-// HELPERS — Fonctions utilitaires dérivées des enums
+// FONCTIONS UTILITAIRES — Dérivées des énumérations
 // =============================================================================
 
 /**

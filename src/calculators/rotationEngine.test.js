@@ -12,12 +12,12 @@
  * @module rotationEngine.test
  */
 
-import { describe, it } from 'node:test';
+import { describe, it } from 'vitest';
 import assert from 'node:assert/strict';
 import { assignAgentRotation, getAgentSummary, VIOLATIONS, STRATEGIES, MIN_VACATION_DURATION_HOURS, MAX_ROLLING_12W_AVERAGE_HOURS, MIN_SUNDAY_REST_PER_MONTH } from './rotationEngine.js';
 
 // ---------------------------------------------------------------------------
-// Helpers de construction de shifts de test
+// Fonctions utilitaires de construction de shifts de test
 // ---------------------------------------------------------------------------
 
 let shiftIdCounter = 0;

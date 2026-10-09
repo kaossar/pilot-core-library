@@ -14,12 +14,16 @@
         "./utils": "./src/utils/index.js"
     },
     "scripts": {
-        "test": "node src/calculators/missionCalculator.test.js && node src/calculators/prePlanner.test.js && node src/calculators/continuousRecurrenceEngine.test.js && node src/segmenters/TimeSegmenter.test.js && node src/engines/HRCalculationEngine.test.js && node src/rbac/roleLabels.test.js && node src/constants/labels.test.js && node src/industries/industryPacks.test.js",
-        "prepare": "git config core.hooksPath .git-hooks || true"
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "prepare": "git config core.hooksPath .husky || true"
     },
     "dependencies": {
         "date-holidays": "^3.26.8"
     },
     "author": "SECUPILOT",
-    "license": "MIT"
+    "license": "MIT",
+    "devDependencies": {
+        "vitest": "^3.2.7"
+    }
 }
