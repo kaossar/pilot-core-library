@@ -13,12 +13,14 @@ describe('clientEnums - Typologies et Statuts Clients PILOT OS', () => {
         expect(CLIENT_TYPES.ENTREPRISE).toBeDefined();
         expect(CLIENT_TYPES.PARTICULIER).toBeDefined();
         expect(CLIENT_TYPES.ASSOCIATION).toBeDefined();
+        expect(CLIENT_TYPES.ADMINISTRATION_PUBLIQUE).toBeDefined();
         expect(CLIENT_TYPES.ORGANISME_PUBLIC).toBeDefined();
 
         expect(CLIENT_TYPES.ENTREPRISE.id).toBe('ENTREPRISE');
         expect(CLIENT_TYPES.PARTICULIER.id).toBe('PARTICULIER');
         expect(CLIENT_TYPES.ASSOCIATION.id).toBe('ASSOCIATION');
-        expect(CLIENT_TYPES.ORGANISME_PUBLIC.id).toBe('ORGANISME_PUBLIC');
+        expect(CLIENT_TYPES.ADMINISTRATION_PUBLIQUE.id).toBe('ADMINISTRATION_PUBLIQUE');
+        expect(CLIENT_TYPES.ADMINISTRATION_PUBLIQUE.label).toBe('Administration publique');
     });
 
     it('définit le cycle de vie commercial avec distinction prospect / actif', () => {
@@ -30,7 +32,8 @@ describe('clientEnums - Typologies et Statuts Clients PILOT OS', () => {
     it('getClientType résout correctement ou renvoie ENTREPRISE par défaut', () => {
         expect(getClientType('PARTICULIER')).toBe(CLIENT_TYPES.PARTICULIER);
         expect(getClientType('particulier')).toBe(CLIENT_TYPES.PARTICULIER);
-        expect(getClientType('ORGANISME_PUBLIC')).toBe(CLIENT_TYPES.ORGANISME_PUBLIC);
+        expect(getClientType('ADMINISTRATION_PUBLIQUE')).toBe(CLIENT_TYPES.ADMINISTRATION_PUBLIQUE);
+        expect(getClientType('ORGANISME_PUBLIC')).toBe(CLIENT_TYPES.ADMINISTRATION_PUBLIQUE);
         expect(getClientType('INCONNU')).toBe(CLIENT_TYPES.ENTREPRISE);
         expect(getClientType(null)).toBe(CLIENT_TYPES.ENTREPRISE);
     });
@@ -38,6 +41,7 @@ describe('clientEnums - Typologies et Statuts Clients PILOT OS', () => {
     it('fonctions utilitaires de typologie', () => {
         expect(isClientParticulier('PARTICULIER')).toBe(true);
         expect(isClientParticulier('ENTREPRISE')).toBe(false);
+        expect(isOrganismePublic('ADMINISTRATION_PUBLIQUE')).toBe(true);
         expect(isOrganismePublic('ORGANISME_PUBLIC')).toBe(true);
         expect(isAssociationClient('ASSOCIATION')).toBe(true);
     });
