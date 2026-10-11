@@ -10,9 +10,6 @@ import {
     getClientStatus,
     isClientParticulier, 
     isClientEtat,
-    isEtat,
-    isAdministration, 
-    isAdministrationPublique, 
     isAssociationClient 
 } from './clientEnums.js';
 
@@ -49,10 +46,11 @@ describe('clientEnums - Typologies et Statuts Clients PILOT OS', () => {
         expect(isClientParticulier('PARTICULIER')).toBe(true);
         expect(isClientParticulier('ENTREPRISE')).toBe(false);
         expect(isClientEtat('ETAT')).toBe(true);
-        expect(isEtat('ETAT')).toBe(true);
-        expect(isAdministration('ETAT')).toBe(true);
-        expect(isAdministrationPublique('ETAT')).toBe(true);
+        expect(isClientEtat({ typeClient: 'ETAT' })).toBe(true);
+        expect(isClientEtat('ENTREPRISE')).toBe(false);
         expect(isAssociationClient('ASSOCIATION')).toBe(true);
+        expect(isAssociationClient({ typeClient: 'ASSOCIATION' })).toBe(true);
+        expect(isAssociationClient('ETAT')).toBe(false);
     });
 
     it('valide l\'ordre canonique du pipeline tactique à 4 jalons et getClientStatus', () => {

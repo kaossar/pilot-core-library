@@ -191,12 +191,8 @@ export function isClientParticulier(clientOrTypeId) {
  */
 export function isClientEtat(clientOrTypeId) {
     const type = extractTypeId(clientOrTypeId).toUpperCase();
-    return type === 'ETAT' || type === 'ADMINISTRATION' || type === 'ADMINISTRATION_PUBLIQUE';
+    return type === 'ETAT';
 }
-
-export const isEtat = isClientEtat;
-export const isAdministration = isClientEtat;
-export const isAdministrationPublique = isClientEtat;
 
 /**
  * Indique si le client est une association
