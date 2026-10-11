@@ -261,4 +261,44 @@ describe('HRCalculationEngine — Multi-Conventions & Isolation Sectorielle Stri
         expect(varNuit).toBeDefined();
         expect(varNuit.amount).toBe(25.92);
     });
+
+    it('6. Protection anti-salaire farfelu : Contrat à 1850 € avec unité HEURE par défaut est normalisé à 12.96 €/h et base brute réelle de 453.60 € (et non 64 750 €)', () => {
+        const engine = new HRCalculationEngine();
+
+        const agent = { id: 'agent-140', firstName: 'Jean', lastName: 'Sécurité' };
+        // Simulation exacte du cas réel : salaire contractuel 1850 avec unité par défaut 'HEURE'
+        const contract = {
+            id: 'c-140',
+            coefficient: 140,
+            salary: 1850,
+            salaryUnit: 'HEURE',
+            status: 'SIGNE'
+        };
+
+        const shifts = [
+            { id: 'v1', startTime: '2026-10-05T06:00:00', endTime: '2026-10-05T14:00:00', status: 'TERMINEE' }, // 8h
+            { id: 'v2', startTime: '2026-10-06T06:00:00', endTime: '2026-10-06T14:00:00', status: 'TERMINEE' }, // 8h
+            { id: 'v3', startTime: '2026-10-08T06:00:00', endTime: '2026-10-08T14:00:00', status: 'TERMINEE' }, // 8h
+            { id: 'v4', startTime: '2026-10-09T06:00:00', endTime: '2026-10-09T17:00:00', status: 'TERMINEE' }  // 11h
+        ]; // Total = 35h
+
+        const result = engine.calculatePayroll({
+            agent,
+            contract,
+            shifts,
+            period: { start: '2026-10-01', end: '2026-10-31' },
+            agencyConfig: { conventionIdcc: '1351' }
+        });
+
+        const trace = result.calculationTrace;
+        expect(trace.ratesSnapshot.contractHourlyRate).toBeCloseTo(12.1975, 2);
+        // Le taux effectif doit être rehaussé au minimum conventionnel du coeff 140 (12.96 €/h)
+        expect(trace.ratesSnapshot.effectiveHourlyRate).toBe(12.96);
+        expect(trace.ratesSnapshot.isBelowMinimum).toBe(true);
+
+        // La base brute pour 35h doit être 35 * 12.96 = 453.60 € (ET SURTOUT PAS 64 750 €)
+        expect(trace.summary.baseGrossAmount).toBe(453.60);
+        expect(trace.summary.totalGrossAmount).toBeLessThan(500);
+        expect(Number(result.payrollData.totalGrossAmount)).toBeCloseTo(462.38, 1);
+    });
 });

@@ -55,7 +55,20 @@ export class CompensationRuleEngine {
         const minHourlyRate = gridEntry ? gridEntry.hourlyRate : legalSmicHourly;
 
         const rawSalary = parseFloat(contract?.salary || 0);
-        const salaryUnit = (contract?.salaryUnit || 'MOIS').toUpperCase();
+        let salaryUnit = (contract?.salaryUnit || 'MOIS').toUpperCase();
+
+        // ── GARDE-FOU ANTI-SALAIRE FARFELU (Mensualisation légale française) ──
+        // Si salaryUnit est 'HEURE' mais que rawSalary >= 100 (ex: 1850 €),
+        // il s'agit manifestement d'un salaire mensuel issu du contrat ou du défaut SQL.
+        // Aucun agent ne gagne 1850 € de l'heure. Le salaire horaire réel est rawSalary / 151.67.
+        if (salaryUnit === 'HEURE' && rawSalary >= 100) {
+            salaryUnit = 'MOIS';
+        }
+        // À l'inverse, si salaryUnit est 'MOIS' mais que rawSalary > 0 et rawSalary < 50 (ex: 12.96 €),
+        // il s'agit manifestement d'un taux horaire saisi avec l'unité mensuelle par mégarde.
+        if (salaryUnit === 'MOIS' && rawSalary > 0 && rawSalary < 50) {
+            salaryUnit = 'HEURE';
+        }
 
         let effectiveHourlyRate = 0;
         if (salaryUnit === 'HEURE') {
