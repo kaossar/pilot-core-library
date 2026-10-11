@@ -32,14 +32,6 @@ export const LEGAL_RELATIONSHIPS = Object.freeze({
         requiresRup: true,      // Obligation légale Article L1221-13 Code du Travail (mention ETT)
         rupSection: 'SALARIES_TEMPORAIRES'
     },
-    SUBCONTRACTOR_WORKER: {
-        id: 'SUBCONTRACTOR_WORKER',
-        label: 'Intervenant sous-traitant',
-        description: 'Salarié d\'une entreprise sous-traitante partenaire titulaire des agréments légaux',
-        requiresPayroll: false,
-        requiresRup: false,     // Ne figure pas au RUP de l'entreprise utilisatrice
-        rupSection: null
-    },
     INDEPENDENT_CONTRACTOR: {
         id: 'INDEPENDENT_CONTRACTOR',
         label: 'Indépendant / TNS',
@@ -85,13 +77,6 @@ export const CONTRACT_FRAMEWORKS = Object.freeze({
         id: 'TEMPORARY_ASSIGNMENT',
         label: 'Contrat de mise à disposition (Intérim)',
         allowedRelationships: ['TEMPORARY_WORKER'],
-        hasEndDate: true
-    },
-    // Pour Sous-traitants
-    SUBCONTRACTING_AGREEMENT: {
-        id: 'SUBCONTRACTING_AGREEMENT',
-        label: 'Contrat / Bon de commande de sous-traitance',
-        allowedRelationships: ['SUBCONTRACTOR_WORKER'],
         hasEndDate: true
     },
     // Pour Indépendants

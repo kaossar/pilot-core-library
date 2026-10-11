@@ -29,8 +29,7 @@ describe('Référentiel Collaborateurs Découplé & Multi-Secteurs (collaborator
             expect(interim.rupSection).toBe('SALARIES_TEMPORAIRES');
         });
 
-        it('identifie les sous-traitants et indépendants hors RUP de l\'agence utilisatrice', () => {
-            expect(LEGAL_RELATIONSHIPS.SUBCONTRACTOR_WORKER.requiresRup).toBe(false);
+        it('identifie les indépendants hors RUP de l\'agence utilisatrice', () => {
             expect(LEGAL_RELATIONSHIPS.INDEPENDENT_CONTRACTOR.requiresRup).toBe(false);
         });
     });
@@ -46,8 +45,8 @@ describe('Référentiel Collaborateurs Découplé & Multi-Secteurs (collaborator
             expect(getAllowedContractFrameworks('TEMPORARY_WORKER')).toEqual(['TEMPORARY_ASSIGNMENT']);
         });
 
-        it('associe la convention de sous-traitance exclusivement aux sous-traitants', () => {
-            expect(getAllowedContractFrameworks('SUBCONTRACTOR_WORKER')).toEqual(['SUBCONTRACTING_AGREEMENT']);
+        it('associe le contrat de prestation de services aux indépendants', () => {
+            expect(getAllowedContractFrameworks('INDEPENDENT_CONTRACTOR')).toEqual(['SERVICE_CONTRACT']);
         });
     });
 
