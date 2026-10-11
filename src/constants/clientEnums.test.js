@@ -15,10 +15,10 @@ describe('clientEnums - Typologies et Statuts Clients PILOT OS', () => {
         expect(CLIENT_TYPES.ASSOCIATION).toBeDefined();
         expect(CLIENT_TYPES.ORGANISME_PUBLIC).toBeDefined();
 
-        expect(CLIENT_TYPES.ENTREPRISE.requiresSiret).toBe(true);
-        expect(CLIENT_TYPES.PARTICULIER.requiresSiret).toBe(false);
-        expect(CLIENT_TYPES.PARTICULIER.isMoralPerson).toBe(false);
-        expect(CLIENT_TYPES.ORGANISME_PUBLIC.requiresChorusPro).toBe(true);
+        expect(CLIENT_TYPES.ENTREPRISE.id).toBe('ENTREPRISE');
+        expect(CLIENT_TYPES.PARTICULIER.id).toBe('PARTICULIER');
+        expect(CLIENT_TYPES.ASSOCIATION.id).toBe('ASSOCIATION');
+        expect(CLIENT_TYPES.ORGANISME_PUBLIC.id).toBe('ORGANISME_PUBLIC');
     });
 
     it('définit le cycle de vie commercial avec distinction prospect / actif', () => {

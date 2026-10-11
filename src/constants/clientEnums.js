@@ -7,46 +7,37 @@
  */
 
 /**
- * Typologies juridiques des clients de sécurité privée
+ * Typologies des clients PILOT OS
+ * Catégories de présentation et de profilage commercial
  */
 export const CLIENT_TYPES = Object.freeze({
-    ENTREPRISE: {
+    ENTREPRISE: Object.freeze({
         id: 'ENTREPRISE',
         label: 'Entreprise',
         code: 'B2B',
-        description: 'Société commerciale, personne morale de droit privé ou entreprise individuelle',
-        requiresSiret: true,
-        requiresVat: true,
-        isMoralPerson: true,
-    },
-    PARTICULIER: {
+        description: 'Entreprise cliente, société ou entrepreneur individuel',
+    }),
+
+    PARTICULIER: Object.freeze({
         id: 'PARTICULIER',
-        label: 'Client Particulier',
+        label: 'Particulier',
         code: 'B2C',
-        description: 'Personne physique, client privé (surveillance de villa, protection personnelle, événement privé)',
-        requiresSiret: false,
-        requiresVat: false,
-        isMoralPerson: false,
-    },
-    ASSOCIATION: {
+        description: 'Personne physique agissant à titre privé',
+    }),
+
+    ASSOCIATION: Object.freeze({
         id: 'ASSOCIATION',
         label: 'Association',
         code: 'B2A',
-        description: 'Association loi 1901, club sportif, fondation ou organisme sans but lucratif',
-        requiresSiret: false,
-        requiresVat: false,
-        isMoralPerson: true,
-    },
-    ORGANISME_PUBLIC: {
+        description: 'Association, fondation ou organisme associatif',
+    }),
+
+    ORGANISME_PUBLIC: Object.freeze({
         id: 'ORGANISME_PUBLIC',
-        label: 'Organisme Public',
+        label: 'Organisme public',
         code: 'B2G',
-        description: 'Collectivité territoriale, administration publique, hôpital ou établissement public (Chorus Pro)',
-        requiresSiret: true,
-        requiresVat: true,
-        isMoralPerson: true,
-        requiresChorusPro: true,
-    },
+        description: 'Administration, collectivité ou établissement public',
+    }),
 });
 
 /**
