@@ -82,15 +82,73 @@ export const CLIENT_STATUS = Object.freeze({
 });
 
 /**
- * Ordre canonique du cycle de vie client pour le Pipeline Tactique
+ * Ordre canonique du cycle de vie client pour le Pipeline Tactique (4 jalons réels)
  */
 export const CLIENT_STATUS_ORDER = Object.freeze([
     'prospect',
     'actif',
     'pause',
-    'litige',
     'resilie'
 ]);
+
+/**
+ * Niveaux de gravité des alertes et litiges transversaux du compte
+ */
+export const CLIENT_RISK_LEVELS = Object.freeze({
+    MINEUR: Object.freeze({
+        id: 'MINEUR',
+        label: 'Mineur',
+        color: '#f59e0b',
+        impact: 'Avertissement visuel · Aucune restriction de planning'
+    }),
+    MAJEUR: Object.freeze({
+        id: 'MAJEUR',
+        label: 'Majeur',
+        color: '#f97316',
+        impact: 'Avertissement planificateur · Confirmation explicite requise'
+    }),
+    BLOQUANT: Object.freeze({
+        id: 'BLOQUANT',
+        label: 'Bloquant',
+        color: '#dc2626',
+        impact: 'Blocage des nouvelles affectations · Maintien des vacations en cours'
+    })
+});
+
+/**
+ * Matrice des transitions autorisées de la FSM (Cycle de vie opérationnel)
+ */
+export const CLIENT_STATUS_TRANSITIONS = Object.freeze({
+    prospect: Object.freeze(['actif', 'resilie']),
+    actif: Object.freeze(['pause', 'resilie']),
+    pause: Object.freeze(['actif', 'resilie']),
+    resilie: Object.freeze(['actif'])
+});
+
+/**
+ * Valide si une transition de statut est autorisée par la FSM
+ * @param {string} fromStatus 
+ * @param {string} toStatus 
+ * @returns {boolean}
+ */
+export function canTransitionClientStatus(fromStatus, toStatus) {
+    if (!fromStatus || !toStatus) return false;
+    const f = String(fromStatus).toLowerCase();
+    const t = String(toStatus).toLowerCase();
+    if (f === t) return true;
+    const allowed = CLIENT_STATUS_TRANSITIONS[f];
+    return Array.isArray(allowed) && allowed.includes(t);
+}
+
+/**
+ * Détermine si une transition exige obligatoirement un motif justificatif
+ * @param {string} toStatus 
+ * @returns {boolean}
+ */
+export function isStatusReasonRequired(toStatus) {
+    const t = String(toStatus || '').toLowerCase();
+    return t === 'pause' || t === 'resilie';
+}
 
 /**
  * Extrait l'identifiant de type soit depuis une chaîne, soit depuis un objet client

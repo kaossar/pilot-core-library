@@ -3,6 +3,9 @@ import {
     CLIENT_TYPES, 
     CLIENT_STATUS, 
     CLIENT_STATUS_ORDER,
+    CLIENT_RISK_LEVELS,
+    canTransitionClientStatus,
+    isStatusReasonRequired,
     getClientType, 
     getClientStatus,
     isClientParticulier, 
@@ -52,10 +55,35 @@ describe('clientEnums - Typologies et Statuts Clients PILOT OS', () => {
         expect(isAssociationClient('ASSOCIATION')).toBe(true);
     });
 
-    it('valide l\'ordre canonique du pipeline tactique et getClientStatus', () => {
-        expect(CLIENT_STATUS_ORDER).toEqual(['prospect', 'actif', 'pause', 'litige', 'resilie']);
+    it('valide l\'ordre canonique du pipeline tactique à 4 jalons et getClientStatus', () => {
+        expect(CLIENT_STATUS_ORDER).toEqual(['prospect', 'actif', 'pause', 'resilie']);
         expect(getClientStatus('actif').label).toBe('Client Actif');
         expect(getClientStatus({ statut: 'litige' }).id).toBe('litige');
         expect(getClientStatus('inconnu').id).toBe('prospect');
+    });
+
+    it('valide les niveaux de risques et la FSM de transition', () => {
+        // Niveaux de risques transversaux
+        expect(CLIENT_RISK_LEVELS.MINEUR.id).toBe('MINEUR');
+        expect(CLIENT_RISK_LEVELS.MAJEUR.id).toBe('MAJEUR');
+        expect(CLIENT_RISK_LEVELS.BLOQUANT.id).toBe('BLOQUANT');
+
+        // Transitions FSM autorisées
+        expect(canTransitionClientStatus('prospect', 'actif')).toBe(true);
+        expect(canTransitionClientStatus('prospect', 'resilie')).toBe(true);
+        expect(canTransitionClientStatus('actif', 'pause')).toBe(true);
+        expect(canTransitionClientStatus('actif', 'resilie')).toBe(true);
+        expect(canTransitionClientStatus('pause', 'actif')).toBe(true);
+        expect(canTransitionClientStatus('pause', 'resilie')).toBe(true);
+        expect(canTransitionClientStatus('resilie', 'actif')).toBe(true);
+
+        // Transitions interdites
+        expect(canTransitionClientStatus('prospect', 'pause')).toBe(false);
+        expect(canTransitionClientStatus('resilie', 'pause')).toBe(false);
+
+        // Motifs obligatoires
+        expect(isStatusReasonRequired('pause')).toBe(true);
+        expect(isStatusReasonRequired('resilie')).toBe(true);
+        expect(isStatusReasonRequired('actif')).toBe(false);
     });
 });
