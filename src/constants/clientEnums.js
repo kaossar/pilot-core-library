@@ -32,11 +32,11 @@ export const CLIENT_TYPES = Object.freeze({
         description: 'Association, fondation ou organisme associatif',
     }),
 
-    ADMINISTRATION_PUBLIQUE: Object.freeze({
-        id: 'ADMINISTRATION_PUBLIQUE',
-        label: 'Administration',
+    ETAT: Object.freeze({
+        id: 'ETAT',
+        label: 'État',
         code: 'B2G',
-        description: 'Administration, collectivité ou établissement public',
+        description: 'Services de l’État, collectivités territoriales ou établissements publics',
     }),
 });
 
@@ -127,13 +127,18 @@ export function isClientParticulier(clientOrTypeId) {
 }
 
 /**
- * Indique si le client est une administration publique assujettie à Chorus Pro
+ * Indique si le client est un service de l'État ou une collectivité assujettie à Chorus Pro
  * @param {string|object} clientOrTypeId
  * @returns {boolean}
  */
-export function isAdministrationPublique(clientOrTypeId) {
-    return extractTypeId(clientOrTypeId).toUpperCase() === 'ADMINISTRATION_PUBLIQUE';
+export function isClientEtat(clientOrTypeId) {
+    const type = extractTypeId(clientOrTypeId).toUpperCase();
+    return type === 'ETAT' || type === 'ADMINISTRATION' || type === 'ADMINISTRATION_PUBLIQUE';
 }
+
+export const isEtat = isClientEtat;
+export const isAdministration = isClientEtat;
+export const isAdministrationPublique = isClientEtat;
 
 /**
  * Indique si le client est une association
