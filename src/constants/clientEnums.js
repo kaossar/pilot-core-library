@@ -10,13 +10,6 @@
  * Typologies des clients PILOT OS
  * Catégories de présentation et de profilage commercial
  */
-const administrationPublique = Object.freeze({
-    id: 'ADMINISTRATION_PUBLIQUE',
-    label: 'Administration publique',
-    code: 'B2G',
-    description: 'Administration, collectivité ou établissement public',
-});
-
 export const CLIENT_TYPES = Object.freeze({
     ENTREPRISE: Object.freeze({
         id: 'ENTREPRISE',
@@ -39,8 +32,12 @@ export const CLIENT_TYPES = Object.freeze({
         description: 'Association, fondation ou organisme associatif',
     }),
 
-    ADMINISTRATION_PUBLIQUE: administrationPublique,
-    ORGANISME_PUBLIC: administrationPublique,
+    ADMINISTRATION_PUBLIQUE: Object.freeze({
+        id: 'ADMINISTRATION_PUBLIQUE',
+        label: 'Administration',
+        code: 'B2G',
+        description: 'Administration, collectivité ou établissement public',
+    }),
 });
 
 /**
@@ -119,19 +116,13 @@ export function isClientParticulier(clientOrTypeId) {
 }
 
 /**
- * Indique si le client est une administration ou organisme public assujetti à Chorus Pro
+ * Indique si le client est une administration publique assujettie à Chorus Pro
  * @param {string|object} clientOrTypeId
  * @returns {boolean}
  */
-export function isOrganismePublic(clientOrTypeId) {
-    const raw = extractTypeId(clientOrTypeId).toUpperCase();
-    return raw === 'ADMINISTRATION_PUBLIQUE' || raw === 'ORGANISME_PUBLIC';
+export function isAdministrationPublique(clientOrTypeId) {
+    return extractTypeId(clientOrTypeId).toUpperCase() === 'ADMINISTRATION_PUBLIQUE';
 }
-
-/**
- * Alias sémantique conforme pour l'Administration publique
- */
-export const isAdministrationPublique = isOrganismePublic;
 
 /**
  * Indique si le client est une association
