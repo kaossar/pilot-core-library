@@ -2,6 +2,7 @@ export * from './formesJuridiques.js';
 export * from './idcc1351.js';
 export * from './contractEnums.js';
 export * from './collaboratorEnums.js';
+export * from './clientEnums.js';
 export * from './affectationRoles.js';
 export * from './qualificationLabels.js';
 export const DAYS_OF_WEEK = [
