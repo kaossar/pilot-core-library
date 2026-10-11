@@ -2,7 +2,9 @@ import { describe, it, expect } from 'vitest';
 import { 
     CLIENT_TYPES, 
     CLIENT_STATUS, 
+    CLIENT_STATUS_ORDER,
     getClientType, 
+    getClientStatus,
     isClientParticulier, 
     isAdministrationPublique, 
     isAssociationClient 
@@ -41,5 +43,12 @@ describe('clientEnums - Typologies et Statuts Clients PILOT OS', () => {
         expect(isClientParticulier('ENTREPRISE')).toBe(false);
         expect(isAdministrationPublique('ADMINISTRATION_PUBLIQUE')).toBe(true);
         expect(isAssociationClient('ASSOCIATION')).toBe(true);
+    });
+
+    it('valide l\'ordre canonique du pipeline tactique et getClientStatus', () => {
+        expect(CLIENT_STATUS_ORDER).toEqual(['prospect', 'actif', 'pause', 'litige', 'resilie']);
+        expect(getClientStatus('actif').label).toBe('Client Actif');
+        expect(getClientStatus({ statut: 'litige' }).id).toBe('litige');
+        expect(getClientStatus('inconnu').id).toBe('prospect');
     });
 });

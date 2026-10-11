@@ -82,6 +82,17 @@ export const CLIENT_STATUS = Object.freeze({
 });
 
 /**
+ * Ordre canonique du cycle de vie client pour le Pipeline Tactique
+ */
+export const CLIENT_STATUS_ORDER = Object.freeze([
+    'prospect',
+    'actif',
+    'pause',
+    'litige',
+    'resilie'
+]);
+
+/**
  * Extrait l'identifiant de type soit depuis une chaîne, soit depuis un objet client
  * @param {string|object} clientOrTypeId
  * @returns {string}
@@ -131,5 +142,19 @@ export function isAdministrationPublique(clientOrTypeId) {
  */
 export function isAssociationClient(clientOrTypeId) {
     return extractTypeId(clientOrTypeId).toUpperCase() === 'ASSOCIATION';
+}
+
+/**
+ * Retourne la configuration de statut client à partir de son identifiant
+ * @param {string|object} clientOrStatusId
+ * @returns {object}
+ */
+export function getClientStatus(clientOrStatusId) {
+    if (!clientOrStatusId) return CLIENT_STATUS.PROSPECT;
+    const rawId = typeof clientOrStatusId === 'object' 
+        ? (clientOrStatusId.statut || clientOrStatusId.status || clientOrStatusId.id || 'prospect')
+        : String(clientOrStatusId);
+    const key = rawId.toUpperCase();
+    return CLIENT_STATUS[key] || CLIENT_STATUS.PROSPECT;
 }
 
