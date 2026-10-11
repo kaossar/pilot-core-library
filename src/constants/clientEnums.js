@@ -91,39 +91,54 @@ export const CLIENT_STATUS = Object.freeze({
 });
 
 /**
- * Retourne la typologie client à partir de son identifiant
- * @param {string} typeId
+ * Extrait l'identifiant de type soit depuis une chaîne, soit depuis un objet client
+ * @param {string|object} clientOrTypeId
+ * @returns {string}
+ */
+function extractTypeId(clientOrTypeId) {
+    if (!clientOrTypeId) return '';
+    if (typeof clientOrTypeId === 'object') {
+        return clientOrTypeId.typeClient || clientOrTypeId.type || clientOrTypeId.id || '';
+    }
+    return String(clientOrTypeId);
+}
+
+/**
+ * Retourne la typologie client à partir de son identifiant ou d'un objet client
+ * @param {string|object} clientOrTypeId
  * @returns {object}
  */
-export function getClientType(typeId) {
-    if (!typeId) return CLIENT_TYPES.ENTREPRISE;
-    const normalized = String(typeId).toUpperCase();
+export function getClientType(clientOrTypeId) {
+    const rawId = extractTypeId(clientOrTypeId);
+    if (!rawId) return CLIENT_TYPES.ENTREPRISE;
+    const normalized = rawId.toUpperCase();
     return CLIENT_TYPES[normalized] || CLIENT_TYPES.ENTREPRISE;
 }
 
 /**
  * Indique si le client est une personne physique
- * @param {string} typeId
+ * @param {string|object} clientOrTypeId
  * @returns {boolean}
  */
-export function isClientParticulier(typeId) {
-    return String(typeId).toUpperCase() === 'PARTICULIER';
+export function isClientParticulier(clientOrTypeId) {
+    return extractTypeId(clientOrTypeId).toUpperCase() === 'PARTICULIER';
 }
 
 /**
  * Indique si le client est un organisme public assujetti à Chorus Pro
- * @param {string} typeId
+ * @param {string|object} clientOrTypeId
  * @returns {boolean}
  */
-export function isOrganismePublic(typeId) {
-    return String(typeId).toUpperCase() === 'ORGANISME_PUBLIC';
+export function isOrganismePublic(clientOrTypeId) {
+    return extractTypeId(clientOrTypeId).toUpperCase() === 'ORGANISME_PUBLIC';
 }
 
 /**
  * Indique si le client est une association
- * @param {string} typeId
+ * @param {string|object} clientOrTypeId
  * @returns {boolean}
  */
-export function isAssociationClient(typeId) {
-    return String(typeId).toUpperCase() === 'ASSOCIATION';
+export function isAssociationClient(clientOrTypeId) {
+    return extractTypeId(clientOrTypeId).toUpperCase() === 'ASSOCIATION';
 }
+
