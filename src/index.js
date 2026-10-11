@@ -39,4 +39,4 @@ export * from './engines/index.js';
 
 // Découpage temporel & Règles conventionnelles RH
 export * from './segmenters/TimeSegmenter.js';
-export * from './rules/idcc1351/idcc1351Rules.js';
+export * from './rules/index.js';
